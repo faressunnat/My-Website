@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Витрина стилей</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;800&family=Manrope:wght@400;500;700&family=Playfair+Display:ital,wght@1,500&family=Rubik+Mono+One&family=Special+Elite&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: белая сцена с пастельными пятнами света и матовым стеклом. Три экрана входа едут влево, затем открывается сам магазин. */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --fg: #12141f;
+  --muted: #5d627d;
+  --accent: #3a38f5;
+  --accent-ink: #ffffff;
+  --line: rgba(18, 20, 31, 0.12);
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.78);
+  --glass-edge: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 14px 34px rgba(40, 44, 110, 0.13), 0 2px 6px rgba(40, 44, 110, 0.06);
+  --blur: blur(18px) saturate(170%);
+  --y2k-a: #3a38f5;
+  --y2k-b: #ff4fc8;
+  --font-display: "Unbounded", "Arial Black", sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-street: "Rubik Mono One", Impact, sans-serif;
+  --font-grunge: "Special Elite", "Courier New", monospace;
+  --font-hand: "Caveat", "Comic Sans MS", cursive;
+  --ease: cubic-bezier(.77, 0, .18, 1);
+}
+
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+
+.viewport { position: relative; height: 100%; overflow: hidden; }
+
+/* Фон: мягкие цветные пятна, сквозь стекло они размываются */
+.bg { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .8; animation: float 20s ease-in-out infinite alternate; }
+.b1 { width: 52vmax; height: 52vmax; left: -14vmax; top: -16vmax; background: #cfd6ff; }
+.b2 { width: 44vmax; height: 44vmax; right: -12vmax; top: 18%; background: #ffd5ee; animation-duration: 26s; }
+.b3 { width: 48vmax; height: 48vmax; left: 28%; bottom: -26vmax; background: #d3f3e4; animation-duration: 23s; }
+.b4 { width: 26vmax; height: 26vmax; left: 8%; bottom: 8%; background: #fff0c4; animation-duration: 29s; }
+@keyframes float { to { transform: translate(4vmax, -3vmax) scale(1.08); } }
+
+.track {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transition: transform 1.2s var(--ease);
+}
+.panel {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding-block: 40px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-y: auto;
+  position: relative;
+}
+.panel--hero { overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+.panel--site { padding-block: 12px 32px; scroll-behavior: auto; }
+.inner { max-width: 1100px; margin-inline: auto; width: 100%; min-width: 0; position: relative; z-index: 1; }
+
+/* Экран 1 */
+.orb {
+  position: absolute;
+  right: -12vmin;
+  bottom: -14vmin;
+  width: 62vmin;
+  height: 62vmin;
+  max-width: 640px;
+  max-height: 640px;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #cdd5ff, #ffffff, #ffd3ee, #d6f5e6, #cdd5ff);
+  box-shadow: inset -24px -34px 70px rgba(255, 255, 255, 0.85), inset 22px 22px 60px rgba(120, 130, 255, 0.22), 0 30px 80px rgba(90, 100, 220, 0.18);
+  animation: drift 14s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to   { transform: translate(-4vmin, -3vmin) rotate(40deg); }
+}
+.welcome {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1rem, 3.4vw, 2rem);
+  letter-spacing: -0.01em;
+  margin: 0 0 14px;
+  text-wrap: balance;
+}
+.brand {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 10.4vw, 8.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+.brand i, .logo i { font-style: normal; color: var(--accent); }
+.hint {
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hint span.arrow { display: inline-block; animation: nudge 1.6s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateX(6px); } }
+.rise { animation: rise .9s var(--ease) both; }
+.rise.d2 { animation-delay: .15s; }
+.rise.d3 { animation-delay: .35s; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* Экран 2 */
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 4.4vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 32px;
+  text-wrap: balance;
+}
+.styles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px 36px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.styles li { min-width: 0; overflow-wrap: anywhere; line-height: 1.1; }
+.s-y2k {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 8vw, 5rem);
+  background: linear-gradient(90deg, var(--y2k-a), var(--y2k-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.03em;
+}
+.s-old { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.2rem, 8vw, 5rem); }
+.s-street { font-family: var(--font-street); text-transform: uppercase; font-size: clamp(1.3rem, 4.4vw, 2.8rem); }
+.s-grunge { font-family: var(--font-grunge); font-size: clamp(1.6rem, 5vw, 3.2rem); color: var(--muted); display: inline-block; transform: rotate(-3deg); }
+.s-boho { font-family: var(--font-hand); font-weight: 600; font-size: clamp(2.4rem, 8vw, 5rem); color: var(--accent); }
+.s-minimal { font-weight: 400; text-transform: uppercase; letter-spacing: 0.42em; font-size: clamp(0.9rem, 2.4vw, 1.4rem); }
+.more { color: var(--muted); margin: 0 0 44px; }
+
+.cta {
+  padding: 22px 24px;
+  border-radius: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+  max-width: 680px;
+}
+.cta p { margin: 0; font-size: clamp(1.05rem, 2.2vw, 1.4rem); font-weight: 500; max-width: 26ch; text-wrap: balance; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  color: var(--accent-ink);
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #5d5bff, #3331e8);
+  box-shadow: 0 10px 24px rgba(58, 56, 245, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: transform .2s ease, filter .2s ease;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn:disabled { cursor: default; filter: saturate(.6); transform: none; }
+.btn--ghost {
+  color: var(--fg);
+  background: var(--glass);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  border: 1px solid var(--glass-edge);
+}
+.btn--sm { padding: 9px 18px; font-size: 0.88rem; }
+.link {
+  appearance: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 6px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.link:hover { color: var(--fg); }
+
+/* Экран 3: регистрация и вход */
+.tabs { display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 22px; border-radius: 999px; }
+.tab {
+  appearance: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 9px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.tab[aria-selected="true"] {
+  background: linear-gradient(180deg, #5d5bff, #3331e8);
+  color: var(--accent-ink);
+  box-shadow: 0 6px 16px rgba(58, 56, 245, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.sub { color: var(--muted); margin: -16px 0 28px; max-width: 46ch; }
+.formcard { max-width: 440px; padding: 24px; border-radius: 28px; }
+form { display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; }
+label { font-size: 0.85rem; font-weight: 700; }
+input {
+  font: inherit;
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px 14px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+input::placeholder { color: var(--muted); }
+.note { min-height: 1.5em; margin: 0; font-size: 0.92rem; color: var(--muted); }
+.back { margin-top: 26px; }
+
+/* Экран 4: магазин */
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  margin-bottom: 40px;
+  padding: 10px 12px 10px 22px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.logo { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; }
+.site-nav { display: flex; gap: 4px; }
+.navlink {
+  appearance: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.navlink:hover { color: var(--fg); background: rgba(255, 255, 255, 0.7); }
+.user { margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.uchip { font-weight: 700; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 18ch; }
+
+.site-section { scroll-margin-top: 92px; }
+.shelf { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 3.4vw, 2rem); letter-spacing: -0.02em; margin: 56px 0 8px; }
+.site-section .sub { margin-top: 0; }
+
+.marquee { position: relative; overflow: hidden; padding-block: 16px 20px; }
+.marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; width: 44px; z-index: 2; pointer-events: none; }
+.marquee::before { left: 0; background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0)); }
+.marquee::after { right: 0; background: linear-gradient(270deg, #ffffff, rgba(255, 255, 255, 0)); }
+.belt { display: flex; gap: 16px; width: max-content; animation: belt 80s linear infinite; }
+.marquee:hover .belt { animation-play-state: paused; }
+@keyframes belt { to { transform: translateX(calc(-50% - 8px)); } }
+
+.scard { flex: 0 0 auto; width: 184px; border-radius: 26px; padding: 12px; display: grid; gap: 12px; align-content: start; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+.fchip {
+  appearance: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--fg);
+  cursor: pointer;
+  padding: 9px 16px;
+  border-radius: 999px;
+}
+.fchip[aria-pressed="true"] { background: var(--fg); color: #ffffff; border-color: var(--fg); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 18px; }
+.pcard {
+  min-width: 0;
+  border-radius: 28px;
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.pcard:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(40, 44, 110, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.95); }
+
+.art { aspect-ratio: 1; max-width: 100%; border-radius: 20px; display: grid; place-items: center; position: relative; overflow: hidden; }
+.art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 45%); pointer-events: none; }
+.art svg { width: 72%; height: 72%; filter: drop-shadow(0 12px 12px rgba(30, 34, 90, 0.28)); position: relative; z-index: 1; }
+.art-a { background: linear-gradient(145deg, #dde2ff, #f4f5ff); }
+.art-b { background: linear-gradient(145deg, #ffdcf2, #fff3fa); }
+.art-c { background: linear-gradient(145deg, #ece6d6, #faf7ef); }
+.art-d { background: linear-gradient(145deg, #d6f2e5, #f1fbf6); }
+
+.cap { font-size: 0.88rem; }
+.cap b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 0.98rem; letter-spacing: -0.01em; margin-bottom: 2px; }
+.cap small { display: block; color: var(--muted); font-size: 0.8rem; }
+.pmeta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.price { font-weight: 800; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.view { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
+
+.f-a { fill: url(#gA); } .f-b { fill: url(#gB); } .f-c { fill: url(#gC); }
+.f-d { fill: url(#gD); } .f-e { fill: url(#gE); } .f-f { fill: url(#gF); }
+.st { fill: none; stroke: rgba(18, 20, 31, 0.3); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.site-foot { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; color: var(--muted); font-size: 0.85rem; }
+.site-foot p { margin: 0; max-width: 60ch; }
+
+/* Окно товара */
+.modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; box-sizing: border-box; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal__scrim { position: absolute; inset: 0; background: rgba(255, 255, 255, 0.4); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); animation: fade .3s ease both; }
+.modal__card {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  max-height: 100%;
+  overflow-y: auto;
+  border-radius: 32px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 22px;
+  background: var(--glass-strong);
+  animation: pop .5s var(--ease) both;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.modal__art { border-radius: 24px; }
+.modal__body { display: grid; gap: 10px; align-content: start; min-width: 0; padding: 6px 4px 6px 0; }
+.modal__body h3 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.15; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.modal__body .eyebrow { margin: 0; }
+.modal__body .pr { font-weight: 800; font-size: 1.35rem; font-variant-numeric: tabular-nums; margin: 0; }
+.modal__body .desc { margin: 0; color: var(--muted); }
+.lbl { margin: 8px 0 0; font-size: 0.85rem; font-weight: 700; }
+.sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.size {
+  appearance: none;
+  font: inherit;
+  font-weight: 700;
+  min-width: 46px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+}
+.size[aria-checked="true"] { background: var(--fg); color: #ffffff; border-color: var(--fg); }
+.modal__x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-edge);
+  background: var(--glass-strong);
+  font: inherit;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--fg);
+  cursor: pointer;
+}
+.buy { margin-top: 10px; }
+
+/* Навигация на экранах входа */
+.nav {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding-block: 20px 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  align-items: center;
+  z-index: 5;
+  pointer-events: none;
+}
+.nav > * { pointer-events: auto; }
+.in-site .nav { display: none; }
+.replay {
+  appearance: none;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 9px 16px;
+  border-radius: 999px;
+}
+.replay:hover { color: var(--fg); }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Сценарий: после сдвига влево элементы экрана появляются по очереди */
+@keyframes pop {
+  from { opacity: 0; translate: 0 24px; scale: .9; }
+  to   { opacity: 1; translate: 0 0; scale: 1; }
+}
+.armed .panel:not(.active) .seq { opacity: 0; }
+.armed .panel.active .seq {
+  animation: pop .8s var(--ease) both;
+  animation-delay: calc(.7s + var(--i, 0) * .22s);
+}
+
+@media (max-width: 640px) {
+  .modal__card { grid-template-columns: minmax(0, 1fr); }
+  .modal__art { max-width: 280px; margin-inline: auto; width: 100%; }
+  .site-nav { order: 3; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track { transition: none; }
+  .orb, .hint span.arrow, .rise, .blob, .modal__card, .modal__scrim { animation: none; }
+  .armed .panel.active .seq { animation: none; }
+  .belt { animation: none; }
+  .marquee { overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f8dff"/><stop offset="1" stop-color="#2927d4"/></linearGradient>
+    <linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9fe2"/><stop offset="1" stop-color="#e0239c"/></linearGradient>
+    <linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a4f70"/><stop offset="1" stop-color="#12141f"/></linearGradient>
+    <linearGradient id="gD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ecd29d"/><stop offset="1" stop-color="#b58845"/></linearGradient>
+    <linearGradient id="gE" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fcaa8"/><stop offset="1" stop-color="#357552"/></linearGradient>
+    <linearGradient id="gF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8cae8"/><stop offset="1" stop-color="#777bab"/></linearGradient>
+  </defs>
+</svg>
+
+<div class="viewport" id="viewport">
+  <div class="bg" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
+
+  <div class="track" id="track">
+
+    <section class="panel panel--hero" id="p0" aria-label="Приветствие">
+      <div class="orb" aria-hidden="true"></div>
+      <div class="inner">
+        <h1>
+          <span class="welcome rise" style="display:block">Добро пожаловать на сайт</span>
+          <span class="brand rise d2" id="brandName">НАЗВАНИЕ<i>.</i></span>
+        </h1>
+        <p class="hint rise d3"><span>Сейчас покажем стили</span><span class="arrow" aria-hidden="true">→</span></p>
+      </div>
+    </section>
+
+    <section class="panel" id="p1" aria-label="Стили">
+      <div class="inner">
+        <p class="eyebrow seq" style="--i:0">Одежда на любой вкус</p>
+        <h2 class="seq" style="--i:1">Найди свой стиль. Их здесь очень много:</h2>
+        <ul class="styles">
+          <li class="s-y2k seq" style="--i:2">Y2K</li>
+          <li class="s-old seq" style="--i:3">Old Money</li>
+          <li class="s-street seq" style="--i:4">Streetwear</li>
+          <li class="s-grunge seq" style="--i:5">Grunge</li>
+          <li class="s-boho seq" style="--i:6">Boho</li>
+          <li class="s-minimal seq" style="--i:7">Minimal</li>
+        </ul>
+        <p class="more seq" style="--i:8">и это только начало.</p>
+        <div class="cta glass seq" style="--i:10">
+          <p>Остальные стили открываются после регистрации</p>
+          <div class="actions">
+            <button class="btn" type="button" data-go="2" data-tab="reg">Зарегистрироваться</button>
+            <button class="btn btn--ghost" type="button" data-go="2" data-tab="login">Войти</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="p2" aria-label="Регистрация и вход">
+      <div class="inner">
+        <p class="eyebrow">Аккаунт</p>
+        <div class="tabs glass" role="tablist">
+          <button class="tab" type="button" role="tab" id="tab-reg" data-mode="reg" aria-selected="true">Регистрация</button>
+          <button class="tab" type="button" role="tab" id="tab-login" data-mode="login" aria-selected="false">Вход</button>
+        </div>
+        <h2 id="authTitle">Регистрация</h2>
+        <p class="sub" id="authSub">Создайте аккаунт, чтобы открыть все стили.</p>
+        <div class="formcard glass">
+          <form id="reg" novalidate>
+            <div class="field" id="nameField">
+              <label for="name">Имя</label>
+              <input id="name" name="name" type="text" autocomplete="given-name" placeholder="Как вас зовут">
+            </div>
+            <div class="field">
+              <label for="email">Электронная почта</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com">
+            </div>
+            <div class="field">
+              <label for="pass">Пароль</label>
+              <input id="pass" name="pass" type="password" autocomplete="new-password" placeholder="Не короче 6 символов">
+            </div>
+            <button class="btn" type="submit" id="authBtn">Создать аккаунт</button>
+            <p class="note" id="note" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <button class="link back" type="button" data-go="1">← Назад к стилям</button>
+      </div>
+    </section>
+
+    <section class="panel panel--site" id="p3" aria-label="Магазин">
+      <div class="inner">
+        <header class="site-head glass">
+          <span class="logo">НАЗВАНИЕ<i>.</i></span>
+          <nav class="site-nav" aria-label="Разделы сайта">
+            <button class="navlink" type="button" data-scroll="styles">Стили</button>
+            <button class="navlink" type="button" data-scroll="shop">Каталог</button>
+          </nav>
+          <div class="user">
+            <span class="uchip" id="userName"></span>
+            <button class="btn btn--ghost btn--sm" type="button" id="logout">Выйти</button>
+          </div>
+        </header>
+
+        <section class="site-section" id="styles" aria-label="Стили">
+          <p class="eyebrow seq" style="--i:0" id="hello">Аккаунт создан</p>
+          <h2 class="seq" style="--i:1">Здесь все стили, которые вы искали</h2>
+          <p class="sub seq" style="--i:2">20 стилей и список растёт. Наведите мышь на ленту, чтобы остановить её.</p>
+          <div class="marquee seq" style="--i:3.5" role="region" aria-label="Лента стилей">
+            <div class="belt" id="beltStyles"></div>
+          </div>
+        </section>
+
+        <section class="site-section" id="shop" aria-label="Каталог">
+          <h3 class="shelf seq" style="--i:4.5">Каталог</h3>
+          <p class="sub seq" style="--i:4.7">Нажмите на вещь, чтобы рассмотреть её и купить.</p>
+          <div class="filters seq" style="--i:4.9" id="filters" role="group" aria-label="Фильтр по стилю"></div>
+          <div class="grid seq" style="--i:5.2" id="grid"></div>
+        </section>
+
+        <footer class="site-foot">
+          <span>НАЗВАНИЕ. Одежда на любой вкус</span>
+          <p>Регистрация, вход и покупки пока демонстрационные: оплата не подключена, данные никуда не отправляются. Цены в примерах условные.</p>
+        </footer>
+      </div>
+    </section>
+
+  </div>
+
+  <nav class="nav" aria-label="Анимация">
+    <button class="replay glass" type="button" id="replay">↻ Повторить анимацию</button>
+  </nav>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal__scrim" data-close></div>
+  <div class="modal__card glass" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="modal__x" type="button" id="mClose" data-close aria-label="Закрыть">×</button>
+    <div class="modal__art art art-a" id="mArt"></div>
+    <div class="modal__body">
+      <p class="eyebrow" id="mStyle"></p>
+      <h3 id="mTitle"></h3>
+      <p class="pr" id="mPrice"></p>
+      <p class="desc" id="mDesc"></p>
+      <p class="lbl" id="mLbl">Размер</p>
+      <div class="sizes" id="mSizes" role="radiogroup" aria-labelledby="mLbl"></div>
+      <button class="btn buy" type="button" id="mBuy">Купить</button>
+      <p class="note" id="mNote" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'stylehub_user';
+  var track = document.getElementById('track');
+  var panels = [document.getElementById('p0'), document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3')];
+  var vp = document.getElementById('viewport');
+  var modal = document.getElementById('modal');
+  var unlocked = false;
+  var current = 0;
+  var touched = false;
+  var timer = null;
+  var mode = 'reg';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function go(n) {
+    if (n > 2 && !unlocked) n = 2;
+    n = Math.max(0, Math.min(panels.length - 1, n));
+    current = n;
+    track.style.transform = 'translateX(' + (-n * 100) + '%)';
+    vp.classList.toggle('in-site', n === 3);
+    panels.forEach(function (p, idx) {
+      p.classList.toggle('active', idx === n);
+      if (idx === n) { p.removeAttribute('inert'); p.removeAttribute('aria-hidden'); }
+      else { p.setAttribute('inert', ''); p.setAttribute('aria-hidden', 'true'); }
+    });
+  }
+
+  /* ---------- Рисунки вещей ---------- */
+  var icon = {
+    tee: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-c" d="M30 12 L8 26 L18 42 L28 36 L28 88 L72 88 L72 36 L82 42 L92 26 L70 12 Q50 28 30 12 Z"/><path class="st" d="M30 12 Q50 28 70 12 M28 36 L28 60 M72 36 L72 60 M34 84 L66 84"/></svg>',
+    hoodie: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-e" d="M30 16 L10 32 L15 84 L29 84 L30 90 L70 90 L71 84 L85 84 L90 32 L70 16 Q50 34 30 16 Z"/><path class="f-e" d="M32 16 Q50 -2 68 16 Q50 36 32 16 Z"/><path class="st" d="M32 16 Q50 -2 68 16 Q50 36 32 16 Z"/><path class="st" d="M38 62 L62 62 L66 78 L34 78 Z"/><path class="st" d="M46 30 L46 46 M54 30 L54 46 M29 84 L71 84"/></svg>',
+    mini: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-b" d="M38 10 L44 10 L50 22 L56 10 L62 10 L60 34 L78 82 L22 82 L40 34 Z"/><path class="st" d="M40 34 L60 34 M34 56 L40 82 M66 56 L60 82"/></svg>',
+    jeans: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-a" d="M30 10 L70 10 L76 92 L54 92 L50 40 L46 92 L24 92 Z"/><path class="st" d="M30 22 L70 22 M50 22 L50 40 M36 28 Q40 34 42 40 M64 28 Q60 34 58 40"/></svg>',
+    blazer: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-f" d="M32 12 L10 30 L15 86 L29 86 L30 92 L70 92 L71 86 L85 86 L90 30 L68 12 L50 40 Z"/><path class="st" d="M32 12 L44 44 L50 40 M68 12 L56 44 L50 40 M50 40 L50 92 M56 62 L58 62 M56 74 L58 74"/></svg>',
+    dress: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-d" d="M36 8 L42 8 L50 26 L58 8 L64 8 L62 40 L86 92 L14 92 L38 40 Z"/><path class="st" d="M38 40 L62 40 M30 66 Q50 74 70 66 M24 84 Q50 92 76 84"/></svg>',
+    shoe: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-c" d="M8 58 L8 40 Q8 36 14 36 L30 36 Q34 48 46 50 L60 52 Q84 54 94 68 L94 78 L8 78 Z"/><rect class="f-f" x="8" y="76" width="86" height="9" rx="4.5"/><path class="st" d="M32 40 L36 44 M38 44 L42 48 M44 48 L48 52"/></svg>',
+    cap: '<svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-b" d="M16 62 Q16 26 52 26 Q86 26 86 62 Z"/><path class="f-b" d="M62 62 Q92 60 98 74 Q80 72 62 70 Z"/><path class="st" d="M62 62 Q92 60 98 74 Q80 72 62 70 Z M52 26 L52 62 M34 32 Q30 48 30 62 M70 32 Q74 48 74 62"/></svg>'
+  };
+  var tones = ['a', 'b', 'c', 'd'];
+
+  /* ---------- Лента стилей ---------- */
+  var looks = [
+    { n: 'Y2K', d: 'Низкие джинсы, мини-юбки, металлик и цветные очки', i: 'jeans' },
+    { n: 'Old Money', d: 'Пиджак, кашемир, лоферы и жемчужные серьги', i: 'blazer' },
+    { n: 'Streetwear', d: 'Худи, оверсайз, массивные кроссовки', i: 'hoodie' },
+    { n: 'Grunge', d: 'Клетчатые рубашки, рваные джинсы, ботинки', i: 'cap' },
+    { n: 'Boho', d: 'Свободные платья, бахрома, вышивка', i: 'dress' },
+    { n: 'Minimal', d: 'Базовые вещи и спокойные нейтральные цвета', i: 'tee' },
+    { n: 'Preppy', d: 'Рубашки, блейзеры, клетка, лоферы', i: 'blazer' },
+    { n: 'Dark Academia', d: 'Твид, водолазки, тёмно-бордовый и хаки', i: 'blazer' },
+    { n: 'Cottagecore', d: 'Цветочные платья, рукава-фонарики, кружево', i: 'dress' },
+    { n: 'Coquette', d: 'Корсеты, банты, жемчуг и пастельные цвета', i: 'mini' },
+    { n: 'Gorpcore', d: 'Походные куртки, флис и треккинговая обувь', i: 'hoodie' },
+    { n: 'Goth', d: 'Всё чёрное, кожа, кружево, грубые ботинки', i: 'shoe' },
+    { n: 'Mob Wife', d: 'Чёрные образы, мех, золото и большие очки', i: 'blazer' },
+    { n: 'Skater', d: 'Графические футболки, шорты, кеды, бини', i: 'tee' },
+    { n: '90s', d: 'Мом-джинсы, оверсайз-блейзеры, свитер-жилет', i: 'jeans' },
+    { n: 'Balletcore', d: 'Пачки, бодики, атласные ленты, балетки', i: 'mini' },
+    { n: 'E-Girl', d: 'Сетка, клетчатые юбки, цепи и берцы', i: 'mini' },
+    { n: '70s', d: 'Клёш, макси-платья, платформа, крупные очки', i: 'jeans' },
+    { n: 'Vintage', d: 'Юбки-солнце, горох, высокая талия', i: 'dress' },
+    { n: 'Soft Girl', d: 'Пастель, теннисные юбки, рюши, вязаные кардиганы', i: 'mini' }
+  ];
+
+  /* ---------- Каталог ---------- */
+  var std = ['XS', 'S', 'M', 'L', 'XL'];
+  var products = [
+    { n: 'Базовая футболка', s: 'Minimal', p: 129000, i: 'tee', sizes: std, d: 'Плотный хлопок и прямой крой. Сочетается почти со всем.' },
+    { n: 'Оверсайз-худи', s: 'Streetwear', p: 289000, i: 'hoodie', sizes: std, d: 'Свободный крой, глубокий капюшон и большой карман.' },
+    { n: 'Мини-платье', s: 'Y2K', p: 219000, i: 'mini', sizes: std, d: 'Короткое платье на тонких бретелях в духе нулевых.' },
+    { n: 'Джинсы с низкой посадкой', s: 'Y2K', p: 329000, i: 'jeans', sizes: std, d: 'Низкая талия и прямые штанины, как в 2000-х.' },
+    { n: 'Классический пиджак', s: 'Old Money', p: 549000, i: 'blazer', sizes: std, d: 'Строгий крой и мягкая ткань. Подходит и к джинсам, и к брюкам.' },
+    { n: 'Свободное платье', s: 'Boho', p: 259000, i: 'dress', sizes: std, d: 'Лёгкая ткань, широкая юбка и мягкая посадка.' },
+    { n: 'Массивные кроссовки', s: 'Streetwear', p: 459000, i: 'shoe', sizes: ['38', '39', '40', '41', '42', '43', '44'], d: 'Высокая подошва и удобная колодка на каждый день.' },
+    { n: 'Кепка', s: 'Grunge', p: 99000, i: 'cap', sizes: ['Единый'], d: 'Мягкий козырёк и регулировка по размеру.' }
+  ];
+  function fmt(n) { return new Intl.NumberFormat('ru-RU').format(n) + ' сум'; }
+
+  var beltStyles = document.getElementById('beltStyles');
+  [0, 1].forEach(function (copy) {
+    looks.forEach(function (w, idx) {
+      var el = document.createElement('div');
+      el.className = 'scard glass';
+      if (copy) el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '<div class="art art-' + tones[idx % 4] + '">' + icon[w.i] + '</div><div class="cap"><b>' + w.n + '</b><small>' + w.d + '</small></div>';
+      beltStyles.appendChild(el);
+    });
+  });
+
+  var grid = document.getElementById('grid');
+  var cards = products.map(function (w, idx) {
+    var el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'pcard glass';
+    el.setAttribute('data-idx', String(idx));
+    el.innerHTML = '<div class="art art-' + tones[idx % 4] + '">' + icon[w.i] + '</div><div class="cap"><b>' + w.n + '</b><small>' + w.s + '</small><div class="pmeta"><span class="price">' + fmt(w.p) + '</span><span class="view">Смотреть →</span></div></div>';
+    grid.appendChild(el);
+    return el;
+  });
+
+  var filters = document.getElementById('filters');
+  var styleNames = ['Все'];
+  products.forEach(function (p) { if (styleNames.indexOf(p.s) < 0) styleNames.push(p.s); });
+  styleNames.forEach(function (name, k) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'fchip glass';
+    b.textContent = name;
+    b.setAttribute('aria-pressed', k === 0 ? 'true' : 'false');
+    b.addEventListener('click', function () {
+      Array.prototype.forEach.call(filters.children, function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+      cards.forEach(function (card, idx) { card.hidden = !(name === 'Все' || products[idx].s === name); });
+    });
+    filters.appendChild(b);
+  });
+
+  /* ---------- Окно товара ---------- */
+  var mArt = document.getElementById('mArt');
+  var mSizes = document.getElementById('mSizes');
+  var mBuy = document.getElementById('mBuy');
+  var mNote = document.getElementById('mNote');
+  var lastTrigger = null;
+  var currentProduct = null;
+  var selectedSize = null;
+
+  function pickSize(btn, size) {
+    selectedSize = size;
+    Array.prototype.forEach.call(mSizes.children, function (b) {
+      b.setAttribute('aria-checked', b === btn ? 'true' : 'false');
+    });
+  }
+  function openModal(idx, trigger) {
+    var p = products[idx];
+    currentProduct = p;
+    lastTrigger = trigger;
+    mArt.className = 'modal__art art art-' + tones[idx % 4];
+    mArt.innerHTML = icon[p.i];
+    document.getElementById('mStyle').textContent = 'Стиль: ' + p.s;
+    document.getElementById('mTitle').textContent = p.n;
+    document.getElementById('mPrice').textContent = fmt(p.p);
+    document.getElementById('mDesc').textContent = p.d;
+    mSizes.innerHTML = '';
+    var mid = Math.floor(p.sizes.length / 2);
+    p.sizes.forEach(function (s, k) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'size';
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', 'false');
+      b.textContent = s;
+      b.addEventListener('click', function () { pickSize(b, s); });
+      mSizes.appendChild(b);
+      if (k === mid) pickSize(b, s);
+    });
+    mNote.textContent = '';
+    mBuy.textContent = 'Купить';
+    mBuy.disabled = false;
+    modal.hidden = false;
+    document.getElementById('mClose').focus();
+  }
+  function closeModal() {
+    modal.hidden = true;
+    if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
+  }
+  mBuy.addEventListener('click', function () {
+    if (!currentProduct) return;
+    if (!selectedSize) { mNote.textContent = 'Выберите размер.'; return; }
+    mNote.textContent = 'Добавлено: ' + currentProduct.n + ', размер ' + selectedSize + '. Оплата пока не подключена, это демонстрация.';
+    mBuy.textContent = 'Добавлено ✓';
+    mBuy.disabled = true;
+  });
+
+  /* ---------- Навигация ---------- */
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var pc = e.target.closest('.pcard');
+    if (pc) { openModal(parseInt(pc.getAttribute('data-idx'), 10), pc); return; }
+    var sc = e.target.closest('[data-scroll]');
+    if (sc) {
+      var target = document.getElementById(sc.getAttribute('data-scroll'));
+      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      return;
+    }
+    var t = e.target.closest('[data-go]');
+    if (!t) return;
+    touched = true;
+    if (t.getAttribute('data-tab')) setMode(t.getAttribute('data-tab'));
+    go(parseInt(t.getAttribute('data-go'), 10));
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!modal.hidden) { if (e.key === 'Escape') closeModal(); return; }
+    if (unlocked) return;
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT') return;
+    if (e.key === 'ArrowRight') { touched = true; go(current + 1); }
+    if (e.key === 'ArrowLeft') { touched = true; go(current - 1); }
+  });
+
+  var sx = null, sy = null;
+  vp.addEventListener('touchstart', function (e) {
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+  }, { passive: true });
+  vp.addEventListener('touchend', function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = e.changedTouches[0].clientY - sy;
+    sx = null;
+    if (unlocked) return;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      touched = true;
+      go(current + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+
+  /* ---------- Регистрация, вход, запоминание ---------- */
+  function setMode(m) {
+    mode = m;
+    var isReg = m === 'reg';
+    document.getElementById('nameField').hidden = !isReg;
+    document.getElementById('authTitle').textContent = isReg ? 'Регистрация' : 'Вход';
+    document.getElementById('authSub').textContent = isReg
+      ? 'Создайте аккаунт, чтобы открыть все стили.'
+      : 'С возвращением! Войдите, чтобы увидеть все стили.';
+    document.getElementById('authBtn').textContent = isReg ? 'Создать аккаунт' : 'Войти';
+    document.getElementById('pass').setAttribute('autocomplete', isReg ? 'new-password' : 'current-password');
+    document.getElementById('tab-reg').setAttribute('aria-selected', isReg ? 'true' : 'false');
+    document.getElementById('tab-login').setAttribute('aria-selected', isReg ? 'false' : 'true');
+    document.getElementById('note').textContent = '';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tb) {
+    tb.addEventListener('click', function () { setMode(tb.getAttribute('data-mode')); });
+  });
+
+  function enterSite(user, fresh, instant) {
+    unlocked = true;
+    var nm = user.name || String(user.email).split('@')[0];
+    document.getElementById('hello').textContent = (fresh ? 'Добро пожаловать, ' : 'С возвращением, ') + nm + '!';
+    document.getElementById('userName').textContent = nm;
+    if (instant) {
+      track.style.transition = 'none';
+      go(3);
+      void track.offsetWidth;
+      track.style.transition = '';
+    } else {
+      setTimeout(function () { go(3); }, 500);
+    }
+  }
+
+  var form = document.getElementById('reg');
+  var note = document.getElementById('note');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var pass = document.getElementById('pass').value;
+    var isReg = mode === 'reg';
+    if ((isReg && !name) || !/^\S+@\S+\.\S+$/.test(email) || pass.length < 6) {
+      note.textContent = isReg
+        ? 'Проверьте поля: нужны имя, почта в формате name@example.com и пароль от 6 символов.'
+        : 'Проверьте поля: нужны почта в формате name@example.com и пароль от 6 символов.';
+      return;
+    }
+    var user = { name: isReg ? name : email.split('@')[0], email: email };
+    try { localStorage.setItem(KEY, JSON.stringify(user)); } catch (err) {}
+    note.textContent = 'Готово!';
+    enterSite(user, isReg, false);
+  });
+
+  document.getElementById('logout').addEventListener('click', function () {
+    try { localStorage.removeItem(KEY); } catch (err) {}
+    play();
+  });
+
+  /* ---------- Запуск анимации ---------- */
+  function play() {
+    clearTimeout(timer);
+    touched = false;
+    unlocked = false;
+    if (!modal.hidden) modal.hidden = true;
+    form.reset();
+    setMode('reg');
+    note.textContent = '';
+    go(0);
+    document.querySelectorAll('.rise').forEach(function (r) {
+      r.style.animation = 'none';
+      void r.offsetWidth;
+      r.style.animation = '';
+    });
+    timer = setTimeout(function () { if (!touched && current === 0) go(1); }, 3600);
+  }
+  document.getElementById('replay').addEventListener('click', play);
+
+  var saved = null;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) saved = JSON.parse(raw);
+  } catch (err) { saved = null; }
+
+  vp.classList.add('armed');
+  if (saved && saved.email) { enterSite(saved, false, true); } else { play(); }
+})();
+</script>
+</body>
+</html>
